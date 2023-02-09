@@ -3,11 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>ru.job4j</groupId>
-    <artifactId>job4j_cinema</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -15,11 +10,33 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <groupId>ru.job4j</groupId>
+    <artifactId>job4j_cinema</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <liquibase.config>db/liquibase_test.properties</liquibase.config>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <liquibase.config>db/liquibase.properties</liquibase.config>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
@@ -59,6 +76,12 @@
             <groupId>net.jcip</groupId>
             <artifactId>jcip-annotations</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -119,6 +142,23 @@
                         <phase>test</phase>
                         <goals>
                             <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.15.0</version>
+                <configuration>
+                    <propertyFile>${liquibase.config}</propertyFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>clearCheckSums</goal>
+                            <goal>update</goal>
                         </goals>
                     </execution>
                 </executions>
