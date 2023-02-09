@@ -25,6 +25,7 @@
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link active" href="/">Главная</a>
                     <a class="nav-item nav-link active" th:href="@{/films}">Кинотека</a>
+                    <a class="nav-item nav-link active" th:href="@{/halls}">Залы</a>
                 </div>
                 <div class="d-flex" th:if="${user.name == 'Гость'}">
                     <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
