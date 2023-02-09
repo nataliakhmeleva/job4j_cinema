@@ -39,14 +39,32 @@
             </div>
         </div>
     </nav>
-    <div class="container mt-2">
-        <h3>Проект job4j_cinema</h3>
-        <ul>
-            <li><a th:href="@{/filmSessions}">Расписание</a></li>
-            <li><a th:href="@{/films}">Кинотека</a></li>
-            <li><a th:href="@{/halls}">Залы</a></li>
-        </ul>
-
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th><i class="bi bi-square"></i></th>
+                    <th scope="col">Название фильма</th>
+                    <th scope="col">Зал</th>
+                    <th scope="col">Время</th>
+                    <th scope="col">Цена</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="filmSession: ${filmSessions}">
+                    <td th:text="${filmSession.id}"/>
+                    <td th:text="${filmSession.film}"/>
+                    <td th:text="${filmSession.hall}"/>
+                    <td th:text="${#temporals.format(filmSession.startTime)}"/>
+                    <td th:text="${filmSession.price}"/>
+                    <td><a th:href="@{/tickets/{filmSessionId}(filmSessionId=${filmSession.id})}">Купить билет</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>
