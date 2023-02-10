@@ -2,7 +2,6 @@ package ru.job4j.cinema.repository;
 
 import org.springframework.stereotype.Repository;
 import org.sql2o.Sql2o;
-import ru.job4j.cinema.model.FilmSession;
 import ru.job4j.cinema.model.User;
 
 import java.util.Collection;
@@ -50,4 +49,31 @@ public class Sql2oUserRepository implements UserRepository {
         }
     }
 
+    @Override
+    public boolean deleteById(int id) {
+        try (var connection = sql2o.open()) {
+            var query = connection.createQuery("DELETE FROM users WHERE id = :id");
+            query.addParameter("id", id);
+            var affectedRows = query.executeUpdate().getResult();
+            return affectedRows > 0;
+        }
+    }
+
+    @Override
+    public Collection<User> findAll() {
+        try (var connection = sql2o.open()) {
+            var query = connection.createQuery("SELECT * FROM users");
+            return query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetch(User.class);
+        }
+    }
+
+    @Override
+    public Optional<User> findById(int id) {
+        try (var connection = sql2o.open()) {
+            var query = connection.createQuery("SELECT * FROM users WHERE id = :id");
+            query.addParameter("id", id);
+            var user = query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetchFirst(User.class);
+            return Optional.ofNullable(user);
+        }
+    }
 }
