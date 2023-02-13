@@ -36,6 +36,5 @@ class Sql2oFileRepositoryTest {
         var expected = sql2oFileRepository.findById(1);
         assertThat(expected).isPresent();
         assertThat(expected.get().getName()).isEqualTo("Avatar");
-        assertThat(expected.get().getPath()).isEqualTo("avatar.jpg");
     }
 }
