@@ -9,12 +9,15 @@ public class FilmSessionDto {
     private LocalDateTime startTime;
     private String price;
 
-    public FilmSessionDto(int id, String film, String hall, LocalDateTime startTime, String price) {
+    private int hallId;
+
+    public FilmSessionDto(int id, String film, String hall, LocalDateTime startTime, String price, int hallId) {
         this.id = id;
         this.film = film;
         this.hall = hall;
         this.startTime = startTime;
         this.price = price;
+        this.hallId = hallId;
     }
 
     public int getId() {
@@ -56,4 +59,13 @@ public class FilmSessionDto {
     public void setPrice(String price) {
         this.price = price;
     }
+
+    public int getHallId() {
+        return hallId;
+    }
+
+    public void setHallId(int hallId) {
+        this.hallId = hallId;
+    }
+
 }

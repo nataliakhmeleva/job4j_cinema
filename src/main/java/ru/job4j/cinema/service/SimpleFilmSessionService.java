@@ -26,19 +26,14 @@ public class SimpleFilmSessionService implements FilmSessionService {
     }
 
     @Override
-    public Optional<FilmSessionDto> findByIdDto(int id) {
+    public Optional<FilmSessionDto> findById(int id) {
         var session = filmSessionRepository.findById(id);
         if (session.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(new FilmSessionDto(session.get().getId(), filmRepository.findById(session.get().getFilmId()).get().getName(),
                 hallRepository.findById(session.get().getHallsId()).get().getName(), session.get().getStartTime(),
-                session.get().getPrice()));
-    }
-
-    @Override
-    public Optional<FilmSession> findById(int id) {
-        return filmSessionRepository.findById(id);
+                session.get().getPrice(), session.get().getHallsId()));
     }
 
     @Override
@@ -46,7 +41,8 @@ public class SimpleFilmSessionService implements FilmSessionService {
         Collection<FilmSessionDto> list = new ArrayList<>();
         for (FilmSession session : filmSessionRepository.findAll()) {
             var filmSession = new FilmSessionDto(session.getId(), filmRepository.findById(session.getFilmId()).get().getName(),
-                    hallRepository.findById(session.getHallsId()).get().getName(), session.getStartTime(), session.getPrice());
+                    hallRepository.findById(session.getHallsId()).get().getName(), session.getStartTime(), session.getPrice(),
+                    session.getHallsId());
             list.add(filmSession);
         }
         return list;

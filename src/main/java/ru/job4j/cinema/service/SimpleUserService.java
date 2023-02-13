@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.repository.UserRepository;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @ThreadSafe
@@ -26,5 +27,18 @@ public class SimpleUserService implements UserService {
         return userRepository.findByEmailAndPassword(email, password);
     }
 
+    @Override
+    public boolean deleteById(int id) {
+        return userRepository.deleteById(id);
+    }
 
+    @Override
+    public Collection<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> findById(int id) {
+        return userRepository.findById(id);
+    }
 }
