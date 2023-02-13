@@ -29,12 +29,12 @@ public class TicketController {
 
     @GetMapping("/{id}")
     public String getCreationPageByBuy(Model model, @PathVariable int id, HttpSession httpSession) {
-        var filmSessionOptional = filmSessionService.findByIdDto(id);
+        var filmSessionOptional = filmSessionService.findById(id);
         if (filmSessionOptional.isEmpty()) {
             model.addAttribute("message", "Сеанс не найден");
             return "errors/404";
         }
-        var hall = hallService.findById(filmSessionService.findById(id).get().getHallsId());
+        var hall = hallService.findById(filmSessionOptional.get().getHallId());
         var user = (User) httpSession.getAttribute("user");
 
         var ticket = new Ticket();
@@ -42,8 +42,8 @@ public class TicketController {
         ticket.setUserId(user.getId());
 
         model.addAttribute("filmSession", filmSessionOptional.get());
-        model.addAttribute("rows", IntStream.rangeClosed(1, hall.get().getRowCount()).boxed().toList());
-        model.addAttribute("places", IntStream.rangeClosed(1, hall.get().getPlaceCount()).boxed().toList());
+        model.addAttribute("rows", ticketService.getRows(hall));
+        model.addAttribute("places", ticketService.getPlaces(hall));
         model.addAttribute("ticket", ticket);
         return "tickets/create";
     }
