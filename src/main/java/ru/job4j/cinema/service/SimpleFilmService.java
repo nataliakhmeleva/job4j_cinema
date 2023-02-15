@@ -28,19 +28,20 @@ public class SimpleFilmService implements FilmService {
         if (film.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new FilmDto(film.get().getId(), film.get().getName(), film.get().getDescription(),
-                film.get().getYear(), film.get().getMinimalAge(), film.get().getDuration(),
-                genreRepository.findById(film.get().getGenreId()).get().getName(), film.get().getFileId()));
+        return Optional.of(convert(film.get()));
     }
 
     @Override
     public Collection<FilmDto> findAll() {
         Collection<FilmDto> list = new ArrayList<>();
         for (Film film : filmRepository.findAll()) {
-            var movie = new FilmDto(film.getId(), film.getName(), film.getDescription(), film.getYear(), film.getMinimalAge(), film.getDuration(),
-                    genreRepository.findById(film.getGenreId()).get().getName(), film.getFileId());
-            list.add(movie);
+            list.add(convert(film));
         }
         return list;
+    }
+
+    private FilmDto convert(Film film) {
+        return new FilmDto(film.getId(), film.getName(), film.getDescription(), film.getYear(), film.getMinimalAge(),
+                film.getDuration(), genreRepository.findById(film.getGenreId()).get().getName(), film.getFileId());
     }
 }

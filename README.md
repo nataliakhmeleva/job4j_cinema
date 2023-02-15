@@ -37,7 +37,7 @@
 - **Создать БД**
 
 ``` shell 
-create database dreamjob;
+create database cinema;
 ```
 
 - **Запустить проект по команде**

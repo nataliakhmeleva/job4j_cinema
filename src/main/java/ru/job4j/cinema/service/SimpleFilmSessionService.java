@@ -31,20 +31,21 @@ public class SimpleFilmSessionService implements FilmSessionService {
         if (session.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(new FilmSessionDto(session.get().getId(), filmRepository.findById(session.get().getFilmId()).get().getName(),
-                hallRepository.findById(session.get().getHallsId()).get().getName(), session.get().getStartTime(),
-                session.get().getPrice(), session.get().getHallsId()));
+        return Optional.of(convert(session.get()));
     }
 
     @Override
     public Collection<FilmSessionDto> findAll() {
         Collection<FilmSessionDto> list = new ArrayList<>();
         for (FilmSession session : filmSessionRepository.findAll()) {
-            var filmSession = new FilmSessionDto(session.getId(), filmRepository.findById(session.getFilmId()).get().getName(),
-                    hallRepository.findById(session.getHallsId()).get().getName(), session.getStartTime(), session.getPrice(),
-                    session.getHallsId());
-            list.add(filmSession);
+            list.add(convert(session));
         }
         return list;
+    }
+
+    private FilmSessionDto convert(FilmSession session) {
+        return new FilmSessionDto(session.getId(), filmRepository.findById(session.getFilmId()).get().getName(),
+                hallRepository.findById(session.getHallsId()).get().getName(), session.getStartTime(), session.getPrice(),
+                session.getHallsId());
     }
 }
